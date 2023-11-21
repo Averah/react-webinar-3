@@ -5,6 +5,8 @@ class Store {
   constructor(initState = {}) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
+    // Вычисление/фиксирование наибольшего id элементов из массива. Вернётся 0 если массив пустой
+    this.state.lastCode = this.state.list.length ? Math.max(...this.state.list.map(listItem => listItem.code)) : 0
   }
 
   /**
@@ -44,7 +46,8 @@ class Store {
   addItem() {
     this.setState({
       ...this.state,
-      list: [...this.state.list, {code: this.state.list.length + 1, title: 'Новая запись'}]
+      lastCode: this.state.lastCode + 1,
+      list: [...this.state.list, {code: this.state.lastCode + 1, title: 'Новая запись', selectedCount: 0}]
     })
   };
 
@@ -69,6 +72,10 @@ class Store {
       list: this.state.list.map(item => {
         if (item.code === code) {
           item.selected = !item.selected;
+          //Увеличение счетчика выделений если элемент был выделен (не считает отмену выделения )
+          item.selected && ++item.selectedCount
+        } else {
+          item.selected = false
         }
         return item;
       })
