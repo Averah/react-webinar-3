@@ -10,6 +10,11 @@ import { declineNum } from './utils'
 function App({ store }) {
 
   const list = store.getState().list;
+// Предотвращает сброс выделения записи при удалении другой записи
+  const onDeleteItem = (code) => (event) => {
+    event.stopPropagation();
+    store.deleteItem(code);
+  }
 
   return (
     <div className='App'>
@@ -33,7 +38,7 @@ function App({ store }) {
                   : ''}
                 </div>
                 <div className='Item-actions'>
-                  <button onClick={() => store.deleteItem(item.code)}>
+                  <button onClick={onDeleteItem(item.code)}>
                     Удалить
                   </button>
                 </div>
