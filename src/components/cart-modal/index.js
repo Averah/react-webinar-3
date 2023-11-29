@@ -12,7 +12,8 @@ function CartModal(props) {
                 onDeleteItem={onDeleteItem}
                 cartItems={cartItems}
                 totalPrice={totalPrice}
-                closeModal={closeModal} />
+                closeModal={closeModal}
+                isCartOpen={isOpen} />
         </Modal>
     )
 };
@@ -26,8 +27,8 @@ CartModal.propTypes = {
 };
 
 CartModal.defaultProps = {
-    closeModal: () => {},
-    onDeleteItem: () => {},
+    closeModal: () => { },
+    onDeleteItem: () => { },
 
 }
 

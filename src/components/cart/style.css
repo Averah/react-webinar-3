@@ -14,8 +14,8 @@
 }
 
 .Cart-list {
-  padding-top: 60px;
-  border-bottom: 1px dashed #ccc;
+  margin-top: 60px;
+  border-top: 1px dashed #ccc;
 }
 
 .Cart-price {
@@ -27,16 +27,16 @@
 }
 
 .Cart-summary {
-  padding: 0px 45px 0px
+  padding: 0px 32px 0px
 }
 
 .Cart-amount {
-  padding: 0px 15px 0px
+  padding: 0px 15px 0px 30px
 }
 
 .Cart-empty {
   text-align: center;
-  padding-top: 160px;
+  padding-top: 140px;
   font-size: 20px;
 }
 

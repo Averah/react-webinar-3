@@ -1,8 +1,8 @@
 .Item {
   display: flex;
   align-items: center;
-
   padding: 0 21px 0 19px;
+  border-bottom: 1px dashed #ccc;
 }
 
 .Item-code {
@@ -18,7 +18,17 @@
   padding: 20px 15px 20px 20px;
   font-size: 18px;
 }
+.Item-quantity {
+  padding: 20px 15px 20px 47px;
+  font-size: 18px;
+}
 
 .Item-actions {
   padding: 20px 0 20px 10px; 
+}
+
+.Item-btn {
+  width: 76px;
+  padding: 1px;
+  font-size: 13px;
 }

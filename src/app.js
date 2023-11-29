@@ -49,7 +49,7 @@ function App({ store }) {
         onDeleteItem={callbacks.onDeleteItem}
         cartItems={cartItems}
         totalPrice={totalPrice} />
-      <List list={list} onAddItem={callbacks.onAddItem} />
+      <List list={list} onAddItem={callbacks.onAddItem} cartItems={cartItems} isCartOpen={isCartOpen} />
     </PageLayout>
   );
 }
