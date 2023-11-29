@@ -33,7 +33,7 @@ Item.propTypes = {
   item: PropTypes.shape({
     code: PropTypes.number,
     title: PropTypes.string,
-    price: PropTypes.number
+    price: PropTypes.number, 
   }).isRequired,
   onAddItem: PropTypes.func,
 };

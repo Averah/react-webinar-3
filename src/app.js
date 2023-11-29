@@ -3,9 +3,8 @@ import List from "./components/list";
 import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
-import { Modal } from './UI/Modal';
 import { convertPrice } from './utils';
-import Cart from './components/cart';
+import CartModal from './components/cart-modal';
 
 /**
  * Приложение
@@ -13,7 +12,7 @@ import Cart from './components/cart';
  * @returns {React.ReactElement}
  */
 function App({ store }) {
-  
+
   const list = store.getState().list;
 
   const [isCartOpen, setIsCartOpen] = useState(false)
@@ -44,13 +43,12 @@ function App({ store }) {
     <PageLayout>
       <Head title='Магазин' />
       <Controls cartItemsAmount={uniqItemsQuantityInCart} totalPrice={totalPrice} onOpenCart={callbacks.onOpenCart} />
-      <Modal isOpen={isCartOpen} closeModal={callbacks.closeModal}>
-        <Cart
-          onDeleteItem={callbacks.onDeleteItem}
-          closeModal={callbacks.closeModal}
-          cartItems={cartItems}
-          totalPrice={totalPrice} />
-      </Modal>
+      <CartModal
+        isOpen={isCartOpen}
+        closeModal={callbacks.closeModal}
+        onDeleteItem={callbacks.onDeleteItem}
+        cartItems={cartItems}
+        totalPrice={totalPrice} />
       <List list={list} onAddItem={callbacks.onAddItem} />
     </PageLayout>
   );
