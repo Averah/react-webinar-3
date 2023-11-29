@@ -1,5 +1,18 @@
 .Controls {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   padding: 20px;
+  border-bottom: 1px dashed #ccc;
+}
+
+.Controls-cart {
+  padding-right: 12px;
+}
+.Controls-cart-info {
+  padding-right: 20px;
+}
+
+.Controls-cart-info {
+  font-weight: bold;
 }

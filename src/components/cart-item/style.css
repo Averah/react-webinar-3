@@ -1,0 +1,22 @@
+.CartItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-top: 1px dashed #ccc;
+}
+
+.CartItem-code {
+    padding: 20px 10px 20px 20px;
+}
+
+.CartItem-title {
+    padding: 20px 10px; 
+}
+
+.CartItem-price {
+    margin-left:auto
+}
+
+.CartItem-actions {
+    padding: 20px 20px 20px 10px; 
+}

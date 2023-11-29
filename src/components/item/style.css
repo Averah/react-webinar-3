@@ -1,12 +1,7 @@
 .Item {
   display: flex;
-  justify-content: flex-start;
-  transition: background-color 1s;
-}
-
-.Item_selected {
-  background: #75aaf1;
-  color: #fff;
+  align-items: center;
+  width: 100%;
 }
 
 .Item-code {
@@ -14,12 +9,14 @@
 }
 
 .Item-title {
-  width: 100%;
-  padding: 20px 10px;
+  padding: 20px 10px; 
+}
+
+.Item-price {
+  margin-left: auto;
+  padding: 20px 10px 20px 20px;
 }
 
 .Item-actions {
-  display: flex;
-  justify-content: flex-end;
-  padding: 20px 20px 20px 10px;
+  padding: 20px 20px 20px 10px; 
 }
