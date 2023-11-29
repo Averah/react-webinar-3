@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {cn as bem} from '@bem-react/classname';
+import { cn as bem } from '@bem-react/classname';
+import { convertPrice } from "../../utils";
 import './style.css';
 
 function CartItem(props) {
     const { item, onDeleteItem } = props;
-    console.log(item);
     const callbacks = {
         onDeleteItem: () => {
             onDeleteItem(item.code);
@@ -20,10 +20,13 @@ function CartItem(props) {
                 {item.title}
             </div>
             <div className={cn('price')}>
-                {`${item.price} ₽`}
+                {`${convertPrice(item.price)} ₽`}
+            </div>
+            <div className={cn('quantity')}>
+                {`${item.cartQuantity} шт`}
             </div>
             <div className={cn('actions')}>
-                <button onClick={callbacks.onDeleteItem}>
+                <button onClick={callbacks.onDeleteItem} className={cn('btn')}>
                     Удалить
                 </button>
             </div>

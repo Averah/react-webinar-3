@@ -8,34 +8,47 @@ import CartItem from "../cart-item";
 function Cart(props) {
     const { onDeleteItem, closeModal, cartItems, totalPrice } = props;
     const cn = bem('Cart');
+    const content = cartItems.length
+        ? <>
+            <div className={cn('list')}>
+                {cartItems.map(item =>
+                    <div key={item.code} className={cn('item')}>
+                        <CartItem item={item} onDeleteItem={onDeleteItem} />
+                    </div>
+                )}
+            </div>
+            <div className={cn('price')}>
+                <div className={cn('summary')}>Итого
+                </div>
+                <div className={cn('amount')}>
+                    {`${totalPrice} ₽`}
+                </div>
+                <div className={cn('splash')}></div>
+            </div>
+
+        </>
+
+        : <div className={cn('empty')}>В корзине пусто</div>
+
 
     return (
         <div className={cn()}>
             <div className={cn('head')}>
                 <Head title='Корзина' />
-                <button onClick={closeModal} className={cn('head-actions')}>Закрыть</button>
+                <button onClick={closeModal} className={cn('actions')}>Закрыть</button>
             </div>
-            <div className={cn('list')}>
-                {cartItems.map(item =>
-                    <div key={item.code} className={cn('list-item')}>
-                        <CartItem item={item} onDeleteItem={onDeleteItem} />
-                    </div>
-                )}
-            </div>
-            <div className={cn('total-price')}>Итого
-                {`${totalPrice} ₽`}
-            </div>
-
+            {content}
         </div>
-
     )
+
+
 }
 
 Cart.propTypes = {
     cartItems: PropTypes.arrayOf(PropTypes.shape({
         code: PropTypes.number
     })).isRequired,
-    totalPrice: PropTypes.number,
+    totalPrice: PropTypes.string,
     onDeleteItem: PropTypes.func,
 };
 

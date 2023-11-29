@@ -14,9 +14,20 @@
 }
 
 .CartItem-price {
-    margin-left:auto
+    margin-left:auto;
+    padding: 20px 40px 20px 20px;
+    font-size: 18px;
+}
+
+.CartItem-quantity {
+    padding: 20px 15px 20px 20px;
+    font-size: 18px;
 }
 
 .CartItem-actions {
     padding: 20px 20px 20px 10px; 
+}
+
+.CartItem-btn {
+    width: 76px;
 }

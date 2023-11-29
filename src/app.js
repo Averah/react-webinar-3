@@ -1,9 +1,10 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import List from "./components/list";
 import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
 import { Modal } from './UI/Modal';
+import { convertPrice } from './utils';
 import Cart from './components/cart';
 
 /**
@@ -11,12 +12,13 @@ import Cart from './components/cart';
  * @param store {Store} Хранилище состояния приложения
  * @returns {React.ReactElement}
  */
-function App({store}) {
+function App({ store }) {
+  
   const list = store.getState().list;
 
   const [isCartOpen, setIsCartOpen] = useState(false)
 
-  const totalPrice = list.reduce((price, item) => price + item.cartQuantity * item.price, 0);
+  const totalPrice = convertPrice(list.reduce((price, item) => price + item.cartQuantity * item.price, 0));
   const uniqItemsQuantityInCart = list.reduce((quantity, item) => item.cartQuantity ? quantity + 1 : quantity, 0);
   const cartItems = useMemo(() => list.filter(item => item.cartQuantity), [list]);
 
@@ -24,7 +26,7 @@ function App({store}) {
     closeModal: useCallback(() => {
       setIsCartOpen(false)
     }, []),
-  
+
     onOpenCart: useCallback(() => {
       setIsCartOpen(true)
     }, []),
@@ -40,14 +42,14 @@ function App({store}) {
 
   return (
     <PageLayout>
-      <Head title='Магазин'/>
+      <Head title='Магазин' />
       <Controls cartItemsAmount={uniqItemsQuantityInCart} totalPrice={totalPrice} onOpenCart={callbacks.onOpenCart} />
       <Modal isOpen={isCartOpen} closeModal={callbacks.closeModal}>
-        <Cart 
-        onDeleteItem={callbacks.onDeleteItem} 
-        closeModal={callbacks.closeModal} 
-        cartItems={cartItems}
-        totalPrice={totalPrice} />
+        <Cart
+          onDeleteItem={callbacks.onDeleteItem}
+          closeModal={callbacks.closeModal}
+          cartItems={cartItems}
+          totalPrice={totalPrice} />
       </Modal>
       <List list={list} onAddItem={callbacks.onAddItem} />
     </PageLayout>

@@ -1,3 +1,4 @@
+
 .Cart-head {
   display: flex;
   align-items: center;
@@ -6,8 +7,10 @@
   padding-right: 20px;
 }
 
-.Cart-head-actions {
+.Cart-actions {
   margin-left: auto;
+  font-size: 13px;
+  width: 80px;
 }
 
 .Cart-list {
@@ -15,9 +18,30 @@
   border-bottom: 1px dashed #ccc;
 }
 
-.Cart-total-price {
-  padding: 20px;
+.Cart-price {
+  box-sizing: border-box;
   font-weight: 700;
   display: flex;
   justify-content: flex-end;
+  padding: 20px 0px
+}
+
+.Cart-summary {
+  padding: 0px 45px 0px
+}
+
+.Cart-amount {
+  padding: 0px 15px 0px
+}
+
+.Cart-empty {
+  text-align: center;
+  padding-top: 160px;
+  font-size: 20px;
+}
+
+.Cart-splash {
+  width: 76px;
+  height: 22px;
+  padding: 20px 20px 20px 10px
 }

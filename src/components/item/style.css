@@ -1,22 +1,24 @@
 .Item {
   display: flex;
   align-items: center;
-  width: 100%;
+
+  padding: 0 21px 0 19px;
 }
 
 .Item-code {
-  padding: 20px 10px 20px 20px;
+  padding: 21px 10px 22px 0;
 }
 
 .Item-title {
-  padding: 20px 10px; 
+  padding: 21px 10px 22px; 
 }
 
 .Item-price {
   margin-left: auto;
-  padding: 20px 10px 20px 20px;
+  padding: 20px 15px 20px 20px;
+  font-size: 18px;
 }
 
 .Item-actions {
-  padding: 20px 20px 20px 10px; 
+  padding: 20px 0 20px 10px; 
 }

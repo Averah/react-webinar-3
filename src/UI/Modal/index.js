@@ -5,7 +5,7 @@ import './style.css'
 import React from 'react'
 
 export const Modal = (props) => {
-    const {isOpen, children, closeModal} = props;
+    const { isOpen, children, closeModal } = props;
 
     useEffect(() => {
         const keydownListener = (event) => {
@@ -26,7 +26,7 @@ export const Modal = (props) => {
 
     const modalJsx = (
         <div className='Modal' onClick={closeModal}>
-            <div onClick={(event) => event.stopPropagation()} className='Modal-content'>            
+            <div onClick={(event) => event.stopPropagation()} className='Modal-content'>
                 {children}
             </div>
         </div>
@@ -44,4 +44,4 @@ Modal.propTypes = {
 Modal.defaultProps = {
     closeModal: () => {
     },
-  }
+}
