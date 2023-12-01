@@ -80,7 +80,7 @@ class Store {
       ...this.state,
       cart: {
         ...this.state.cart,
-        cartItems: [...newCartItems],
+        cartItems: newCartItems,
         totalPrice: newCartItems.reduce((price, item) => price + item.cartQuantity * item.price, 0),
         uniqCartItemsAmount: newCartItems.length
       }

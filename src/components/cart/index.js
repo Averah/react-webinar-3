@@ -6,11 +6,11 @@ import Head from "../head";
 import List from "../list";
 
 function Cart(props) {
-    const { onDeleteItem, closeModal, cartItems, totalPrice, isCartOpen } = props;
+    const { onDeleteItem, closeModal, cartItems, totalPrice } = props;
     const cn = bem('Cart');
     const content = cartItems.length
         ? <div className={cn('list')}>
-            <List onDeleteItem={onDeleteItem} isCartOpen={isCartOpen} list={cartItems} />
+            <List onDeleteItem={onDeleteItem} isListInCart={true} list={cartItems} />
             <div className={cn('price')}>
                 <div className={cn('summary')}>Итого
                 </div>

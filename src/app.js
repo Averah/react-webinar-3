@@ -12,13 +12,12 @@ import CartModal from './components/cart-modal';
  * @returns {React.ReactElement}
  */
 function App({ store }) {
+  
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   const list = store.getState().list;
-  const cartItems = store.getState().cart.cartItems;
-  const totalPrice = convertPrice(store.getState().cart.totalPrice)
-  const uniqCartItemsAmount = store.getState().cart.uniqCartItemsAmount;
-
-  const [isCartOpen, setIsCartOpen] = useState(false)
+  const totalPrice = convertPrice(store.getState().cart.totalPrice);
+  const { uniqCartItemsAmount, cartItems } = store.getState().cart;
 
   const callbacks = {
     closeModal: useCallback(() => {
@@ -48,7 +47,7 @@ function App({ store }) {
         onDeleteItem={callbacks.onDeleteItem}
         cartItems={cartItems}
         totalPrice={totalPrice} />
-      <List list={list} onAddItem={callbacks.onAddItem} cartItems={cartItems} isCartOpen={isCartOpen} />
+      <List list={list} onAddItem={callbacks.onAddItem} cartItems={cartItems} />
     </PageLayout>
   );
 }

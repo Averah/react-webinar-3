@@ -5,7 +5,7 @@ import './style.css';
 import { cn as bem } from '@bem-react/classname';
 
 function Item(props) {
-  const { item, onAddItem, onDeleteItem, isCartOpen } = props;
+  const { item, onAddItem, onDeleteItem, isListInCart } = props;
   const cn = bem('Item');
 
   const callbacks = {
@@ -17,6 +17,10 @@ function Item(props) {
     }
   }
 
+  const onClickHandler = () => {
+    isListInCart ? callbacks.onDeleteItem() : callbacks.onAddItem();
+  }
+
   return (
     <div className={cn()}>
       <div className={cn('code')}>{item.code}</div>
@@ -26,26 +30,17 @@ function Item(props) {
       <div className={cn('price')}>
         {`${convertPrice(item.price)} ₽`}
       </div>
-      {(isCartOpen && item.cartQuantity)
-        ? <>
-          <div className={cn('quantity')}>
-            {`${item.cartQuantity} шт`}
-          </div>
-          <div className={cn('actions')}>
-            <button onClick={callbacks.onDeleteItem} className={cn('btn')}>
-              Удалить
-            </button>
-          </div>
-        </>
-        : <div className={cn('actions')}>
-          <button onClick={callbacks.onAddItem} className={cn('btn')}>
-            Добавить
-          </button>
-        </div>
-      }
+      {isListInCart &&
+        <div className={cn('quantity')}>{`${item.cartQuantity} шт`}</div>}
+      <div className={cn('actions')}>
+        <button onClick={onClickHandler} className={cn('btn')}>
+          {isListInCart ? 'Удалить' : 'Добавить'}
+        </button>
+      </div>
     </div>
   );
 }
+
 
 Item.propTypes = {
   item: PropTypes.shape({
@@ -56,7 +51,7 @@ Item.propTypes = {
   }).isRequired,
   onAddItem: PropTypes.func,
   onDeleteItem: PropTypes.func,
-  isCartOpen: PropTypes.bool
+  isListInCart: PropTypes.bool
 };
 
 Item.defaultProps = {
