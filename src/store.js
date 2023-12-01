@@ -44,10 +44,29 @@ class Store {
    * Добавление продукта в корзину по коду
    */
   addItemToCart(code) {
-    this.setState({
-      ...this.state,
-      list: this.state.list.map(item => item.code === code ? { ...item, cartQuantity: item.cartQuantity + 1 } : item)
-    })
+    const newCartItem = this.state.list.find(item => item.code === code);
+    const isAlreadyInCart = this.state.cart.cartItems.some(item => item.code === newCartItem.code);
+
+    if (!isAlreadyInCart) {
+      this.setState({
+        ...this.state,
+        cart: {
+          ...this.state.cart,
+          cartItems: [...this.state.cart.cartItems, { ...newCartItem, cartQuantity: 1 }],
+          totalPrice: this.state.cart.totalPrice + newCartItem.price,
+          uniqCartItemsAmount: this.state.cart.uniqCartItemsAmount + 1
+        }
+      })
+    } else {
+      this.setState({
+        ...this.state,
+        cart: {
+          ...this.state.cart,
+          cartItems: this.state.cart.cartItems.map(item => item.code === newCartItem.code ? { ...item, cartQuantity: item.cartQuantity + 1 } : item),
+          totalPrice: this.state.cart.totalPrice + newCartItem.price,
+        }
+      })
+    }
   }
 
   /**
@@ -55,12 +74,18 @@ class Store {
    * @param code
    */
   deleteItemFromCart(code) {
+    const newCartItems = this.state.cart.cartItems.filter(item => item.code !== code);
+
     this.setState({
       ...this.state,
-      list: this.state.list.map(item => item.code === code ? { ...item, cartQuantity: 0 } : item)
+      cart: {
+        ...this.state.cart,
+        cartItems: [...newCartItems],
+        totalPrice: newCartItems.reduce((price, item) => price + item.cartQuantity * item.price, 0),
+        uniqCartItemsAmount: newCartItems.length
+      }
     })
   };
-
   /**
    * Выделение записи по коду
    * @param code

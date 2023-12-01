@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import './style.css';
 import { plural } from '../../utils'
 
-function Controls({ onOpenCart, cartItemsAmount, totalPrice }) {
+function Controls({ onOpenCart, uniqCartItemsAmount, totalPrice }) {
   return (
     <div className='Controls'>
       <div className='Controls-cart'>В корзине:</div>
       <div className='Controls-info'>
-        {cartItemsAmount !== 0
-          ? `${cartItemsAmount} ${plural(cartItemsAmount, { one: 'товар', few: 'товара', many: 'товаров' })} / ${totalPrice} ₽`
+        {uniqCartItemsAmount !== 0
+          ? `${uniqCartItemsAmount} ${plural(uniqCartItemsAmount, { one: 'товар', few: 'товара', many: 'товаров' })} / ${totalPrice} ₽`
           : 'пусто '}
       </div>
       <button onClick={() => onOpenCart()} className='Controls-btn'>Перейти</button>
@@ -19,7 +19,7 @@ function Controls({ onOpenCart, cartItemsAmount, totalPrice }) {
 
 Controls.propTypes = {
   onOpenCart: PropTypes.func,
-  cartItemsAmount: PropTypes.number,
+  uniqCartItemsAmount: PropTypes.number,
   totalPrice: PropTypes.string
 };
 

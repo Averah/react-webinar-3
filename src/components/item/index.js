@@ -26,7 +26,7 @@ function Item(props) {
       <div className={cn('price')}>
         {`${convertPrice(item.price)} ₽`}
       </div>
-      {isCartOpen
+      {(isCartOpen && item.cartQuantity)
         ? <>
           <div className={cn('quantity')}>
             {`${item.cartQuantity} шт`}

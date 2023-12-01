@@ -3,20 +3,14 @@ import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import './style.css'
 import Head from "../head";
-import Item from "../item";
+import List from "../list";
 
 function Cart(props) {
     const { onDeleteItem, closeModal, cartItems, totalPrice, isCartOpen } = props;
     const cn = bem('Cart');
     const content = cartItems.length
-        ? <>
-            <div className={cn('list')}>
-                {cartItems.map(item =>
-                    <div key={item.code} className={cn('item')}>
-                        <Item item={item} onDeleteItem={onDeleteItem} isCartOpen={isCartOpen} />
-                    </div>
-                )}
-            </div>
+        ? <div className={cn('list')}>
+            <List onDeleteItem={onDeleteItem} isCartOpen={isCartOpen} list={cartItems} />
             <div className={cn('price')}>
                 <div className={cn('summary')}>Итого
                 </div>
@@ -25,11 +19,8 @@ function Cart(props) {
                 </div>
                 <div className={cn('splash')}></div>
             </div>
-
-        </>
-
+        </div>
         : <div className={cn('empty')}>В корзине пусто</div>
-
 
     return (
         <div className={cn()}>

@@ -14,12 +14,11 @@ import CartModal from './components/cart-modal';
 function App({ store }) {
 
   const list = store.getState().list;
+  const cartItems = store.getState().cart.cartItems;
+  const totalPrice = convertPrice(store.getState().cart.totalPrice)
+  const uniqCartItemsAmount = store.getState().cart.uniqCartItemsAmount;
 
   const [isCartOpen, setIsCartOpen] = useState(false)
-
-  const totalPrice = convertPrice(list.reduce((price, item) => price + item.cartQuantity * item.price, 0));
-  const uniqItemsQuantityInCart = list.reduce((quantity, item) => item.cartQuantity ? quantity + 1 : quantity, 0);
-  const cartItems = useMemo(() => list.filter(item => item.cartQuantity), [list]);
 
   const callbacks = {
     closeModal: useCallback(() => {
@@ -42,7 +41,7 @@ function App({ store }) {
   return (
     <PageLayout>
       <Head title='Магазин' />
-      <Controls cartItemsAmount={uniqItemsQuantityInCart} totalPrice={totalPrice} onOpenCart={callbacks.onOpenCart} />
+      <Controls totalPrice={totalPrice} uniqCartItemsAmount={uniqCartItemsAmount} onOpenCart={callbacks.onOpenCart} />
       <CartModal
         isOpen={isCartOpen}
         closeModal={callbacks.closeModal}
