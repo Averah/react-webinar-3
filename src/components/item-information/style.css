@@ -1,0 +1,21 @@
+.ItemInformation {
+    padding: 21px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 18px;
+
+}
+
+
+.ItemInformation-addButton {
+    width: fit-content;
+    padding: 1px 8px;
+}
+
+.ItemInformation-price {
+    font-size: 24px;
+    font-weight: 700;
+    display: flex;
+    gap: 10px;
+}

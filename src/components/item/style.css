@@ -5,6 +5,10 @@
   padding-left: 10px
 }
 
+.Item button {
+  padding: 1px 8px;
+}
+
 .Item_selected {
   background: #75aaf1;
   color: #fff;
@@ -17,6 +21,15 @@
 .Item-title {
   width: 100%;
   padding: 20px 10px;
+}
+
+.Item-link {
+  color: #000;
+  text-decoration: none;
+}
+
+.Item-link:hover {
+  text-decoration: underline;
 }
 
 .Item-actions {

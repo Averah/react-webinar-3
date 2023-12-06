@@ -1,7 +1,7 @@
 import { codeGenerator } from "../../utils";
 import StoreModule from "../module";
 
-class Catalog extends StoreModule {
+class Item extends StoreModule {
 
   constructor(store, name) {
     super(store, name);
@@ -10,29 +10,23 @@ class Catalog extends StoreModule {
 
   initState() {
     return {
-      list: [],
-      currentPage: 1,
-      itemsTotalCount: 0,
-      itemsLimitPerPage: 10,
+      itemInfo: null,
       isLoading: false,
     }
   }
-
-  async load(itemsLimit = 10, page = 1) {
-
+  // Запрос подробной информации о товаре
+  async load(id) {
     try {
       this.setState({
         ...this.getState(),
-        isLoading: true,
-        currentPage: page
+        isLoading: true
       })
-      const response = await fetch(`/api/v1/articles?limit=${itemsLimit}&skip=${itemsLimit * (this.getState().currentPage - 1)}&fields=items(_id, title, price),count`);
+      const response = await fetch(`/api/v1/articles/${id}?fields=*,madeIn(title,code),category(title)`);
       const json = await response.json();
       this.setState({
         ...this.getState(),
-        list: json.result.items,
-        itemsTotalCount: json.result.count
-      }, 'Загружены товары из АПИ');
+        itemInfo: json.result,
+      }, 'Загружен товар из АПИ по id');
     } catch (error) {
       console.log(error);
     } finally {
@@ -41,8 +35,15 @@ class Catalog extends StoreModule {
         isLoading: false
       })
     }
-
+  }
+  //зачистка информации о товаре
+  cleanItemInfo() {
+    this.setState({
+      ...this.getState(),
+      itemInfo: null,
+      error: ''
+    })
   }
 }
 
-export default Catalog;
+export default Item;
