@@ -1,6 +1,7 @@
 import { cn as bem } from '@bem-react/classname';
 import PropTypes from 'prop-types';
 import { memo } from 'react';
+import { useTranslation } from '../../store/use-translation';
 import { numberFormat } from '../../utils';
 import "./style.css"
 
@@ -10,17 +11,19 @@ function ItemInformation({ item, onAdd }) {
     addToBasket: () => onAdd(item._id)
   }
 
+  const t = useTranslation();
+
   return (
     <div className={cn()}>
       <div className={cn('description')}>{item?.description}</div>
-      <div className={cn('country')}>Страна производитель: <b>{item?.madeIn.title} ({item?.madeIn.code})</b></div>
-      <div className={cn('category')}>Категория: <b>{item?.category.title}</b></div>
-      <div className={cn('year')}>Год выпуска: <b>{item?.edition}</b></div>
+      <div className={cn('country')}>{t('manufactCountry')}: <b>{item?.madeIn.title} ({item?.madeIn.code})</b></div>
+      <div className={cn('category')}>{t('category')}: <b>{item?.category.title}</b></div>
+      <div className={cn('year')}>{t('manufactYear')}: <b>{item?.edition}</b></div>
       <div className={cn('price')}>
-        <div >Цена:</div>
+        <div >{t('price')}:</div>
         <div>{numberFormat(item?.price)} ₽</div>
       </div>
-      <button className={cn('addButton')} onClick={callbacks.addToBasket}>Добавить</button>
+      <button className={cn('addButton')} onClick={callbacks.addToBasket}>{t('add')}</button>
     </div>
   )
 }

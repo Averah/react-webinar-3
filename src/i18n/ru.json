@@ -1,0 +1,25 @@
+{
+    "lang": "en",
+    "main": "Главная",
+    "cartSummary": "В корзине",
+    "empty": "пусто",
+    "itemOne": "товар",
+    "itemsFew": "товара",
+    "itemsMany": "товаров",
+    "openCart": "Перейти",
+    "cart": "Корзина",
+    "add": "Добавить",
+    "removeItem": "Удалить",
+    "close": "Закрыть",
+    "total": "Итого",
+    "shop": "Магазин",
+    "qty": "шт",
+    "manufactCountry": "Страна производитель",
+    "category": "Категория",
+    "manufactYear": "Год выпуска",
+    "price": "Цена",
+    "itemNotFound": "Товар не найден",
+    "itemsNotFound": "Товары не найдены"
+    
+
+}

@@ -1,4 +1,4 @@
-import {memo, useEffect} from "react";
+import {memo, useCallback, useEffect} from "react";
 import PropTypes from "prop-types";
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
@@ -13,6 +13,9 @@ function PageLayout({head, footer, children}) {
   const activeModal = useSelector(state => state.modals.name);
   const store = useStore();
   const { pathname } = useLocation();
+  const callbacks = {
+    changeLanguage: useCallback(() => store.actions.language.toggleLanguage())
+  }
 
   useEffect(() => {
     store.actions.modals.close()

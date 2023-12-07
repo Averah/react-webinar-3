@@ -1,0 +1,26 @@
+{
+    "lang": "ru",
+    "main": "Main",
+    "cartSummary": "In cart",
+    "empty": "empty",
+    "itemOne": "item",
+    "itemsFew": "items",
+    "itemsMany": "items",
+    "openCart": "Open cart",
+    "cart": "Cart",
+    "add": "Add",
+    "removeItem": "Remove",
+    "close": "Close",
+    "total": "Total",
+    "shop": "Shop",
+    "qty": "qty",
+    "manufactCountry": "Сountry of manufacture",
+    "category": "Сategory",
+    "manufactYear": "Year of manufacture",
+    "price": "Price",
+    "itemNotFound": "Item not found",
+    "itemsNotFound": "Items not found"
+
+
+
+}

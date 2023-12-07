@@ -8,6 +8,7 @@ import ItemInformation from '../../components/item-information';
 import { useParams } from "react-router-dom";
 import Loader from '../../components/loader';
 import ErrorMessage from '../../components/error-message';
+import { useTranslation } from '../../store/use-translation';
 
 function Article() {
     const { id } = useParams();
@@ -27,7 +28,7 @@ function Article() {
         amount: state.basket.amount,
         isLoading: state.item.isLoading,
         title: state.item.itemInfo?.title,
-        sum: state.basket.sum
+        sum: state.basket.sum,
     }));
     const callbacks = {
         addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
@@ -35,8 +36,10 @@ function Article() {
         openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
     }
 
+    const t = useTranslation();
+
     const content = select.item ? <ItemInformation item={select.item} onAdd={callbacks.addToBasket} />
-    : <ErrorMessage errorText='Товар не найден' />
+    : <ErrorMessage errorText={t('itemNotFound')}/>
 
     return (
         <PageLayout>

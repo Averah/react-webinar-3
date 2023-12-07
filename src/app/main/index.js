@@ -10,6 +10,7 @@ import Pagination from '../../components/pagination';
 import { useParams } from "react-router-dom";
 import Loader from '../../components/loader';
 import ErrorMessage from '../../components/error-message';
+import { useTranslation } from '../../store/use-translation';
 
 function Main() {
 
@@ -20,7 +21,7 @@ function Main() {
     currentPage: state.catalog.currentPage,
     amount: state.basket.amount,
     sum: state.basket.sum,
-    isLoading: state.catalog.isLoading
+    isLoading: state.catalog.isLoading,
   }));
 
   const { pageNumber } = useParams();
@@ -43,17 +44,19 @@ function Main() {
     }, [callbacks.addToBasket]),
   };
 
+  const t = useTranslation();
+
   const content = select.list.length ? (
     <>
       <List list={select.list} renderItem={renders.item} />
       <Pagination itemsTotalCount={select.itemsTotalCount} currentPage={select.currentPage} itemsLimitPerPage={select.itemsLimitPerPage} />
     </>
   )
-    : <ErrorMessage errorText='Товары не найдены' />
+    : <ErrorMessage errorText={t('itemsNotFound')} />
 
   return (
     <PageLayout>
-      <Head title='Магазин' />
+      <Head title={t('shop')} />
       <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
         sum={select.sum} />
       {select.isLoading ? <Loader />
