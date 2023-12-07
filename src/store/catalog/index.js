@@ -41,7 +41,13 @@ class Catalog extends StoreModule {
         isLoading: false
       })
     }
+  }
 
+  addItemToList(item) {
+    this.setState({
+      ...this.getState(),
+      list: [...this.getState().list, item]
+    })
   }
 }
 

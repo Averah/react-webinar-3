@@ -13,7 +13,15 @@ import { useTranslation } from '../../store/use-translation';
 function Article() {
     const { id } = useParams();
     const store = useStore();
-
+    const select = useSelector(state => ({
+        item: state.item.itemInfo,
+        amount: state.basket.amount,
+        isLoading: state.item.isLoading,
+        title: state.item.itemInfo?.title,
+        sum: state.basket.sum,
+        list: state.catalog.list,
+    }));
+   
     useEffect(() => {
         store.actions.item.load(id);
 
@@ -23,13 +31,13 @@ function Article() {
 
     }, [id])
 
-    const select = useSelector(state => ({
-        item: state.item.itemInfo,
-        amount: state.basket.amount,
-        isLoading: state.item.isLoading,
-        title: state.item.itemInfo?.title,
-        sum: state.basket.sum,
-    }));
+    useEffect(() => {
+        if (select.item && !select.list?.length) {
+            store.actions.catalog.addItemToList(select.item)
+        }
+    }, [select.list, select.item])
+
+
     const callbacks = {
         addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
         // Открытие модалки корзины
