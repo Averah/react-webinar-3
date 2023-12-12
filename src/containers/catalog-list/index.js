@@ -19,6 +19,8 @@ function CatalogList() {
     limit: state.catalog.params.limit,
     count: state.catalog.count,
     waiting: state.catalog.waiting,
+    sort: state.catalog.params.sort,
+    query: state.catalog.params.query,
   }));
 
   const callbacks = {
