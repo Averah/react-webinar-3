@@ -5,6 +5,7 @@ import useSelector from "../../hooks/use-selector";
 import Select from "../../components/select";
 import Input from "../../components/input";
 import SideLayout from "../../components/side-layout";
+import {  prepareCategories } from "../../utils";
 
 /**
  * Контейнер со всеми фильтрами каталога
@@ -16,8 +17,9 @@ function CatalogFilter() {
   const select = useSelector(state => ({
     sort: state.catalog.params.sort,
     query: state.catalog.params.query,
+    categories: state.categories.items,
+    category: state.catalog.params.category
   }));
-
   const callbacks = {
     // Сортировка
     onSort: useCallback(sort => store.actions.catalog.setParams({sort}), [store]),
@@ -25,21 +27,32 @@ function CatalogFilter() {
     onSearch: useCallback(query => store.actions.catalog.setParams({query, page: 1}), [store]),
     // Сброс
     onReset: useCallback(() => store.actions.catalog.resetParams(), [store]),
+    onCategoryChange: useCallback(category => store.actions.catalog.setParams({category, page: 1}), [store])
   };
+
+  const categoriesList = prepareCategories(select.categories).map((category) => {
+    return {value: category._id, title: category.title}
+  });
+
 
   const options = {
     sort: useMemo(() => ([
-      {value: 'order', title: 'По порядку'},
-      {value: 'title.ru', title: 'По именованию'},
-      {value: '-price', title: 'Сначала дорогие'},
-      {value: 'edition', title: 'Древние'},
-    ]), [])
+      { value: 'order', title: 'По порядку' },
+      { value: 'title.ru', title: 'По именованию' },
+      { value: '-price', title: 'Сначала дорогие' },
+      { value: 'edition', title: 'Древние' },
+    ]), []),
+    categories: useMemo(() => ([
+      { value: '', title: 'Все' },
+      ...categoriesList
+    ]), [categoriesList])
   };
 
   const {t} = useTranslate();
 
   return (
     <SideLayout padding='medium'>
+      <Select options={options.categories} value={select.category} onChange={callbacks.onCategoryChange} />
       <Select options={options.sort} value={select.sort} onChange={callbacks.onSort}/>
       <Input value={select.query} onChange={callbacks.onSearch} placeholder={'Поиск'}
              delay={1000}/>
