@@ -30,11 +30,6 @@ function CatalogFilter() {
     onCategoryChange: useCallback(category => store.actions.catalog.setParams({category, page: 1}), [store])
   };
 
-  const categoriesList = prepareCategories(select.categories).map((category) => {
-    return {value: category._id, title: category.title}
-  });
-
-
   const options = {
     sort: useMemo(() => ([
       { value: 'order', title: 'По порядку' },
@@ -44,8 +39,8 @@ function CatalogFilter() {
     ]), []),
     categories: useMemo(() => ([
       { value: '', title: 'Все' },
-      ...categoriesList
-    ]), [categoriesList])
+      ...prepareCategories(select.categories)
+    ]), [select.categories])
   };
 
   const {t} = useTranslate();

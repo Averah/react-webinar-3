@@ -1,0 +1,14 @@
+.ProfileInfo {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ProfileInfo div {
+    font-size: 18px;
+}
+
+.ProfileInfo h2 {
+    margin: 0 0 10px;
+}

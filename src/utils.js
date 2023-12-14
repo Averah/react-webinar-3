@@ -50,28 +50,31 @@ export function prepareCategories(categories) {
   const prepareNestedCategoryTitle = (originalTitle, nestedLevel) =>
     `${new Array(nestedLevel).fill(CATEGORY_NEST_SEPARATOR).join(' ')} ${originalTitle}`;
 
-  return categories.reduce((newCategories, categoryItem, _, originalCategories) => {
-    // если категория без родителя - пропускаем
-    if (categoryItem.parent) {
-      return newCategories;
-    }
+  return categories
+    .reduce((newCategories, categoryItem, _, originalCategories) => {
+      // если категория без родителя - пропускаем
+      if (categoryItem.parent) {
+        return newCategories;
+      }
 
-    // для начала добавляем категорию без родителя в итоговый массив
-    newCategories.push(categoryItem);
+      // для начала добавляем категорию без родителя в итоговый массив
+      newCategories.push(categoryItem);
 
-    function findCategoryChildren(categoryWithChildren, nestedLevel) {
-      for (let idx = 0; idx < originalCategories.length; idx++) {
-        if (originalCategories[idx].parent && originalCategories[idx].parent._id === categoryWithChildren._id) {
-          // добавляем ребенка в итоговый массив (с преобразованием тайтла) и идем искать его детей
-          newCategories.push({ ...originalCategories[idx], title: prepareNestedCategoryTitle(originalCategories[idx].title, nestedLevel) });
-          findCategoryChildren(originalCategories[idx], nestedLevel + 1);
+      function findCategoryChildren(categoryWithChildren, nestedLevel) {
+        for (let idx = 0; idx < originalCategories.length; idx++) {
+          if (originalCategories[idx].parent && originalCategories[idx].parent._id === categoryWithChildren._id) {
+            // добавляем ребенка в итоговый массив (с преобразованием тайтла) и идем искать его детей
+            newCategories.push({ ...originalCategories[idx], title: prepareNestedCategoryTitle(originalCategories[idx].title, nestedLevel) });
+            findCategoryChildren(originalCategories[idx], nestedLevel + 1);
+          }
         }
       }
-    }
 
-    // ищем детей категории без родителя
-    findCategoryChildren(categoryItem, 1);
-console.log(newCategories);
-    return newCategories
-  }, []);
+      // ищем детей категории без родителя
+      findCategoryChildren(categoryItem, 1);
+      return newCategories
+    }, [])
+    .map((category) => {
+      return { value: category._id, title: category.title }
+    });
 }

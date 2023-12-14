@@ -1,0 +1,9 @@
+.AuthorizationTool {
+    padding: 0px 10px 0px 0px;
+}
+.AuthorizationTool a{
+    padding-right: 20px;
+    color: #0087E9;
+    font-size: 13px;
+    text-decoration-line: underline;
+}
