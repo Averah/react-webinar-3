@@ -27,7 +27,7 @@ function Login() {
   }
 
   useEffect(() => {
-    select.isAuthorized && navigate(-1)
+    select.isAuthorized && navigate(-1);
   }, [select.isAuthorized])
 
   useEffect(() => {
