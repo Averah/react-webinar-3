@@ -6,14 +6,14 @@ class LoginState extends StoreModule {
     return {
       isAuthorized: false,
       user: {},
-      waiting: false,
+      isWaiting: false,
       error: ''
     }
   }
 
   async login(data) {
     this.setState({
-      waiting: true
+      isWaiting: true
     });
 
     try {
@@ -29,7 +29,7 @@ class LoginState extends StoreModule {
         this.setState({
           ...this.getState(),
           isAuthorized: true,
-          waiting: false,
+          isWaiting: false,
           user: json.result.user,
           error: ''
         }, 'Авторизация прошла успешно');
@@ -42,7 +42,7 @@ class LoginState extends StoreModule {
         ...this.getState(),
         isAuthorized: false,
         error: e.message,
-        waiting: false
+        isWaiting: false
       });
     }
   }

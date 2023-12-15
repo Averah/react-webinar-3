@@ -14,8 +14,10 @@ function Profile() {
 
     const select = useSelector(state => ({
         isAuthorized: state.login.isAuthorized,
-        user: state.login.user
+        user: state.profile.user
     }));
+    const store = useStore();
+
 
     const navigate = useNavigate();
 
@@ -23,6 +25,7 @@ function Profile() {
         if (!select.isAuthorized) {
             navigate('/login');
         }
+        store.actions.profile.getProfile();
     }, [select.isAuthorized])
 
 
