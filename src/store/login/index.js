@@ -7,7 +7,8 @@ class LoginState extends StoreModule {
       isAuthorized: false,
       user: {},
       isWaiting: false,
-      error: ''
+      error: '',
+      isUserAuthChecked: false,
     }
   }
 
@@ -31,7 +32,8 @@ class LoginState extends StoreModule {
           isAuthorized: true,
           isWaiting: false,
           user: json.result.user,
-          error: ''
+          error: '',
+          isUserAuthChecked: true,
         }, 'Авторизация прошла успешно');
       } else {
         throw new Error(json.error.data.issues[0].message)
@@ -42,14 +44,15 @@ class LoginState extends StoreModule {
         ...this.getState(),
         isAuthorized: false,
         error: e.message,
-        isWaiting: false
+        isWaiting: false,
+        isUserAuthChecked: true,
       });
     }
   }
-  
+
   async checkAuth() {
     this.setState({
-      waiting: true
+      isWaiting: true
     });
 
     const authToken = localStorage.getItem('auth-token');
@@ -58,8 +61,9 @@ class LoginState extends StoreModule {
       this.setState({
         ...this.getState(),
         isAuthorized: false,
-        waiting: false,
-        user: {}
+        isWaiting: false,
+        user: {},
+        isUserAuthChecked: true,
       });
 
       return;
@@ -77,8 +81,9 @@ class LoginState extends StoreModule {
           ...this.getState(),
           isAuthorized: true,
           user: json.result,
-          waiting: false,
-          error: ''
+          isWaiting: false,
+          error: '',
+          isUserAuthChecked: true,
         }, 'Пользователь авторизован');
       } else {
         console.log(json.error.data.issues[0].message);
@@ -90,7 +95,8 @@ class LoginState extends StoreModule {
         ...this.getState(),
         isAuthorized: false,
         error: e.message,
-        waiting: false
+        isWaiting: false,
+        isUserAuthChecked: true,
       });
     }
   }
@@ -100,7 +106,7 @@ class LoginState extends StoreModule {
       ...this.getState(),
       isAuthorized: false,
       user: {},
-      waiting: false,
+      isWaiting: false,
       error: ''
     });
 
@@ -109,7 +115,7 @@ class LoginState extends StoreModule {
     await fetch(`/api/v1/users/sign`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json', 'X-Token': authToken 
+        'Content-Type': 'application/json', 'X-Token': authToken
       }
     });
     localStorage.removeItem('auth-token')

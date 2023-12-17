@@ -3,7 +3,7 @@ import './style.css';
 import PropTypes from "prop-types";
 import { cn as bem } from '@bem-react/classname';
 
-function LoginForm({ t, onLogin, waiting, error }) {
+function LoginForm({ t, onLogin, isWaiting, error }) {
 
     const cn = bem('LoginForm');
     const [loginValue, setLogin] = useState('')
@@ -31,7 +31,7 @@ function LoginForm({ t, onLogin, waiting, error }) {
                     <input type="password" id="password" value={passwordValue} onChange={callbacks.onPasswordChange} />
                 </div>
                 {error && <div className={cn('error')}>{error}</div>}
-                <button type="submit" className={cn('button')} disabled={waiting}>{t('signin')}</button>
+                <button type="submit" className={cn('button')} disabled={isWaiting}>{t('signin')}</button>
             </form>
 
 
@@ -42,7 +42,7 @@ function LoginForm({ t, onLogin, waiting, error }) {
 LoginForm.propTypes = {
     t: PropTypes.func,
     onLogin: PropTypes.func,
-    waiting: PropTypes.bool,
+    isWaiting: PropTypes.bool,
     error: PropTypes.string
 
 };

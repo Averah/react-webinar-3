@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect } from 'react';
 import useStore from "../../hooks/use-store";
 import useTranslate from "../../hooks/use-translate";
 import { useNavigate } from 'react-router-dom';
@@ -16,9 +16,10 @@ function Login() {
   const navigate = useNavigate();
 
   const select = useSelector(state => ({
-    waiting: state.login.waiting,
+    isWaiting: state.login.isWaiting,
     error: state.login.error,
-    isAuthorized: state.login.isAuthorized
+    isAuthorized: state.login.isAuthorized,
+    isUserAuthChecked: state.login.isUserAuthChecked
   }));
 
   const callbacks = {
@@ -26,8 +27,8 @@ function Login() {
     cleanErrors: useCallback(() => store.actions.login.cleanErrors(), [store]),
   }
 
-  useEffect(() => {
-    select.isAuthorized && navigate(-1);
+  useLayoutEffect(() => {
+    select.isAuthorized && navigate('/profile');
   }, [select.isAuthorized])
 
   useEffect(() => {
@@ -45,7 +46,9 @@ function Login() {
         <LocaleSelect />
       </Head>
       <Navigation />
-      <LoginForm t={t} onLogin={callbacks.login} waiting={select.waiting} error={select.error} />
+      {select.isUserAuthChecked && 
+        <LoginForm t={t} onLogin={callbacks.login} isWaiting={select.isWaiting} error={select.error} />}
+      
     </PageLayout>
   );
 }

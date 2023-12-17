@@ -11,6 +11,7 @@ function AuthorizationMenu() {
     const navigate = useNavigate();
     const store = useStore();
     const { t } = useTranslate();
+
     const callbacks = {
         logout: useCallback(() => store.actions.login.logout(), [store]),
         onLoginNavigate: useCallback(() => navigate("/login"), []),

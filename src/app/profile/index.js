@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from "../../hooks/use-store";
 import useTranslate from "../../hooks/use-translate";
@@ -9,24 +9,31 @@ import LocaleSelect from "../../containers/locale-select";
 import AuthorizationMenu from '../../containers/authorization-menu';
 import ProfileInfo from '../../components/profile-info';
 import useSelector from '../../hooks/use-selector';
+import useIsAuth from '../../hooks/use-is-auth';
 
 function Profile() {
 
+    const { isAuth, isAuthChecked } = useIsAuth();
+
     const select = useSelector(state => ({
-        isAuthorized: state.login.isAuthorized,
         user: state.profile.user
     }));
+    
     const store = useStore();
-
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!select.isAuthorized) {
+    useLayoutEffect(() => {
+        if (isAuthChecked && !isAuth) {
             navigate('/login');
         }
-        store.actions.profile.getProfile();
-    }, [select.isAuthorized])
+    }, [isAuth, isAuthChecked])
+
+    useEffect(() => {
+        if (isAuth) {
+            store.actions.profile.getProfile();
+        }
+    }, [isAuth])
 
 
     const { t } = useTranslate();
@@ -38,7 +45,7 @@ function Profile() {
                 <LocaleSelect />
             </Head>
             <Navigation />
-            <ProfileInfo t={t} user={select.user} />
+            {isAuthChecked && <ProfileInfo t={t} user={select.user} />}
         </PageLayout>
     );
 }
