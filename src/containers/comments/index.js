@@ -3,53 +3,69 @@ import {useParams} from 'react-router-dom';
 import useStore from '../../hooks/use-store';
 import useTranslate from '../../hooks/use-translate';
 import useInit from '../../hooks/use-init';
-import PageLayout from '../../components/page-layout';
-import Head from '../../components/head';
-import Navigation from '../../containers/navigation';
 import Spinner from '../../components/spinner';
-import ArticleCard from '../../components/article-card';
-import LocaleSelect from '../../containers/locale-select';
-import TopHead from '../../containers/top-head';
 import {useDispatch, useSelector} from 'react-redux';
 import shallowequal from 'shallowequal';
-import articleActions from '../../store-redux/article/actions';
+import commentsActions from '../../store-redux/comments/actions';
+import treeToList from '../../utils/tree-to-list';
+import listToTree from '../../utils/list-to-tree';
+import CommentsList from '../../components/comments-list';
+import CommentForm from '../../components/comment-form';
+import useAuth from '../../hooks/use-auth';
 
 function Comments() {
   const store = useStore();
 
   const dispatch = useDispatch();
-  // Параметры из пути /articles/:id
 
   const params = useParams();
 
-  useInit(() => {
-    //store.actions.article.load(params.id);
-    dispatch(articleActions.load(params.id));
-  }, [params.id]);
-
   const select = useSelector(state => ({
     article: state.article.data,
-    waiting: state.article.waiting,
-  }), shallowequal); // Нужно указать функцию для сравнения свойства объекта, так как хуком вернули объект
+    waiting: state.comments.waiting,
+    comments: state.comments.comments,
+    commentIdWithOpenedForm: state.comments.commentIdWithOpenedForm
+  }), shallowequal);
+
+  const options = {
+    comments: useMemo(() => ([
+      ...treeToList(listToTree(select.comments), (item, level) => (
+        { ...item, level }
+      ))
+    ]), [select.comments]),
+  };
 
   const {t} = useTranslate();
+  const { isAuth } = useAuth();
+
+  useInit(() => {
+    dispatch(commentsActions.load(params.id));
+  }, [params.id]);
 
   const callbacks = {
-    // Добавление в корзину
-    addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
+    sendComment: useCallback((parentType, parentId, text) => {
+      dispatch(commentsActions.send(parentType, parentId, text));
+    }, []),
+    setCommentIdWithOpenedForm: useCallback((id) => {
+      dispatch(commentsActions.setCommentIdWithOpenedForm(id));
+    }, []),
   }
 
+  const [trash, ...comments] = options.comments;
+
   return (
-    <PageLayout>
-      <TopHead/>
-      <Head title={select.article.title}>
-        <LocaleSelect/>
-      </Head>
-      <Navigation/>
-      <Spinner active={select.waiting}>
-        <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
-      </Spinner>
-    </PageLayout>
+    <Spinner active={select.waiting}>
+      <CommentsList
+        isAuth={isAuth}
+        commentIdWithOpenedForm={select.commentIdWithOpenedForm} 
+        comments={comments} 
+        onSendNewComment={callbacks.sendComment}
+        onSetCommentFormId={callbacks.setCommentIdWithOpenedForm} 
+      />
+      {!select.commentIdWithOpenedForm && (
+        <CommentForm isAuth={isAuth} onSubmit={callbacks.sendComment} parentType="article" parentId={params.id} />
+      )}
+    </Spinner>
   );
 }
 

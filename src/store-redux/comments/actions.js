@@ -1,19 +1,45 @@
 export default {
     load: (id) => {
-      return async (dispatch, getState, services) => {
+      return async (dispatch, _, services) => {
         dispatch({type: 'comments/load-comments'});
   
         try {
           const res = await services.api.request({
-            url: `/api/v1/articles/${id}?fields=*,madeIn(title,code),category(title)`
+            url: `/api/v1/comments?search[parent]=${id}&fields=items(*,author(_id,profile(name)))`
           });
-          dispatch({type: 'article/load-success', payload: {data: res.data.result.items}});
+
+          dispatch({type: 'comments/load-success', payload: {items: res.data.result.items}});
   
         } catch (e) {
-          dispatch({type: 'article/load-error'});
+          dispatch({type: 'comments/load-error'});
         }
       }
     },
+    send: (parentType, parentId, text) => {
+      return async (dispatch, _, services) => {
+        dispatch({type: 'comments/send-comments'});
+  
+        try {
+          const res = await services.api.request({
+            url: '/api/v1/comments',
+            method: 'POST',
+            body: JSON.stringify({
+              text,
+              parent: {
+                "_id":  parentId, 
+                "_type":  parentType
+              },
+            }),
+          });
+
+          dispatch({type: 'comments/send-success'});
+  
+        } catch (e) {
+          dispatch({type: 'comments/send-error'});
+        }
+      }
+    },
+    setCommentIdWithOpenedForm: (id) => ({type: 'comments/set-comment-id-with-opened-form', payload: id})
   }
 
 
