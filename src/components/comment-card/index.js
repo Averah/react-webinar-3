@@ -1,9 +1,13 @@
 import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { cn as bem } from "@bem-react/classname";
-import numberFormat from "../../utils/number-format";
 import CommentForm from "../comment-form";
-// import "./style.css";
+import "./style.css";
+
+function getLocalDateMonthYear(d) {
+    return d.toLocaleDateString("ru-RU", { day: 'numeric', month: 'long' }) + " " +
+           d.toLocaleDateString("ru-RU", { year: 'numeric' });
+  }
 
 function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentForm, isAuth }) {
   const cn = bem("CommentCard");
@@ -12,21 +16,33 @@ function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentFor
     onOpenCommentForm(null)
   }, []);
 
+  const date = getLocalDateMonthYear(new Date(comment.dateUpdate));
+
+  const time = new Date(comment.dateUpdate).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+   });
+
   return (
-    <div className={cn()}>
-      <div className={cn("header")}>
-        <span className={cn("username")}>{comment.author.profile.name}</span>
-        <span className={cn("date")}>
-          {new Date(comment.dateUpdate).toLocaleDateString()}
-        </span>
+    <div
+      className={cn()}
+      style={{ paddingLeft: `${(comment.level - 1) * 30}px` }}
+    >
+      <div className={cn("container")}>
+        <div className={cn("header")}>
+          <span className={cn("username")}>{comment.author.profile.name}</span>
+          <span className={cn("date")}>
+            {date} в {time}
+          </span>
+        </div>
+        <div className={cn("text")}>{comment.text}</div>
+        <button
+          onClick={() => onOpenCommentForm(comment._id)}
+          className={cn("responseBtn")}
+        >
+          Ответить
+        </button>
       </div>
-      <div className={cn("text")}>{comment.text}</div>
-      <button
-        onClick={() => onOpenCommentForm(comment._id)}
-        className={cn("responseBtn")}
-      >
-        Ответить
-      </button>
       {isFormOpened && (
         <CommentForm
           isAuth={isAuth}

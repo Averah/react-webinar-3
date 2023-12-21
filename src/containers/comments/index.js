@@ -44,8 +44,8 @@ function Comments() {
 
   const callbacks = {
     sendComment: useCallback((parentType, parentId, text) => {
-      dispatch(commentsActions.send(parentType, parentId, text));
-    }, []),
+      dispatch(commentsActions.send(params.id, parentType, parentId, text));
+    }, [params.id]),
     setCommentIdWithOpenedForm: useCallback((id) => {
       dispatch(commentsActions.setCommentIdWithOpenedForm(id));
     }, []),

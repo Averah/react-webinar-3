@@ -5,7 +5,7 @@ export default {
   
         try {
           const res = await services.api.request({
-            url: `/api/v1/comments?search[parent]=${id}&fields=items(*,author(_id,profile(name)))`
+            url: `/api/v1/comments?search[parent]=${id}&fields=items(*,author(_id,profile(name)))&limit=50`
           });
 
           dispatch({type: 'comments/load-success', payload: {items: res.data.result.items}});
@@ -15,7 +15,7 @@ export default {
         }
       }
     },
-    send: (parentType, parentId, text) => {
+    send: (pageId, parentType, parentId, text) => {
       return async (dispatch, _, services) => {
         dispatch({type: 'comments/send-comments'});
   
@@ -33,6 +33,7 @@ export default {
           });
 
           dispatch({type: 'comments/send-success'});
+          dispatch(this.load(pageId));
   
         } catch (e) {
           dispatch({type: 'comments/send-error'});

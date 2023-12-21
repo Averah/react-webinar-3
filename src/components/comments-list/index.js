@@ -1,7 +1,7 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import { cn as bem } from "@bem-react/classname";
-// import "./style.css";
+import "./style.css";
 import CommentCard from "../comment-card";
 
 function CommentsList({ comments, onSendNewComment, commentIdWithOpenedForm, onSetCommentFormId, isAuth }) {
@@ -9,7 +9,7 @@ function CommentsList({ comments, onSendNewComment, commentIdWithOpenedForm, onS
 
   return (
     <div className={cn()}>
-      <span className={cn("username")}>Комментарии ({comments.length})</span>
+      <div className={cn("title")}>Комментарии ({comments.length})</div>
       {comments.map((comment) => (
         <CommentCard
           isFormOpened={comment._id === commentIdWithOpenedForm}
