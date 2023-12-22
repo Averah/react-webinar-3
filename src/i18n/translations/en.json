@@ -20,5 +20,16 @@
   "auth.password": "Password",
   "auth.signIn": "Sign in",
   "session.signIn": "Sign In",
-  "session.signOut": "Sign Out"
+  "session.signOut": "Sign Out",
+  "comments.Title": "Comments",
+  "comments.Respond": "Respond",
+  "comments.in": "in",
+  "commentsForm.NewAnswer": "New answer",
+  "commentsForm.NewComment": "New comment",
+  "commentsForm.Login": "Login",
+  "commentsForm.Send": "Send",
+  "commentsForm.respond": "respond",
+  "commentsForm.comment": "comment",
+  "commentsForm.Cancel": "Cancel",
+  "commentsForm.toHaveOportunity": "to have oportunity to"
 }

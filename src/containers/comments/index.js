@@ -51,7 +51,7 @@ function Comments() {
     }, []),
   }
 
-  const [trash, ...comments] = options.comments;
+  const [_, ...comments] = options.comments;
 
   return (
     <Spinner active={select.waiting}>
@@ -60,10 +60,12 @@ function Comments() {
         commentIdWithOpenedForm={select.commentIdWithOpenedForm} 
         comments={comments} 
         onSendNewComment={callbacks.sendComment}
-        onSetCommentFormId={callbacks.setCommentIdWithOpenedForm} 
+        onSetCommentFormId={callbacks.setCommentIdWithOpenedForm}
+        lang={lang}
+        t={t}
       />
       {!select.commentIdWithOpenedForm && (
-        <CommentForm isAuth={isAuth} onSubmit={callbacks.sendComment} parentType="article" parentId={params.id} />
+        <CommentForm isAuth={isAuth} onSubmit={callbacks.sendComment} parentType="article" parentId={params.id} t={t} />
       )}
     </Spinner>
   );

@@ -4,19 +4,19 @@ import { cn as bem } from "@bem-react/classname";
 import CommentForm from "../comment-form";
 import "./style.css";
 
-function getLocalDateMonthYear(d) {
-    return d.toLocaleDateString("ru-RU", { day: 'numeric', month: 'long' }) + " " +
-           d.toLocaleDateString("ru-RU", { year: 'numeric' });
+function getLocalDateMonthYear(d, locale) {
+    return d.toLocaleDateString(locale, { day: 'numeric', month: 'long' }) + " " +
+           d.toLocaleDateString(locale, { year: 'numeric' });
   }
 
-function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentForm, isAuth }) {
+function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentForm, isAuth, t, lang }) {
   const cn = bem("CommentCard");
 
   const closeForm = useCallback(() => {
     onOpenCommentForm(null)
   }, []);
 
-  const date = getLocalDateMonthYear(new Date(comment.dateUpdate));
+  const date = getLocalDateMonthYear(new Date(comment.dateUpdate), lang);
 
   const time = new Date(comment.dateUpdate).toLocaleTimeString([], {
     hour: '2-digit',
@@ -32,7 +32,7 @@ function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentFor
         <div className={cn("header")}>
           <span className={cn("username")}>{comment.author.profile.name}</span>
           <span className={cn("date")}>
-            {date} в {time}
+            {date} t{'comments.in'} {time}
           </span>
         </div>
         <div className={cn("text")}>{comment.text}</div>
@@ -40,7 +40,7 @@ function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentFor
           onClick={() => onOpenCommentForm(comment._id)}
           className={cn("responseBtn")}
         >
-          Ответить
+          {t('comments.Respond')}
         </button>
       </div>
       {isFormOpened && (
@@ -50,6 +50,7 @@ function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentFor
           parentId={comment._id}
           onSubmit={onSendNewComment}
           onCancel={closeForm}
+          t={t}
         />
       )}
     </div>
@@ -62,15 +63,14 @@ CommentCard.propTypes = {
     isFormOpened: PropTypes.bool,
     onOpenCommentForm: PropTypes.func,
     onSendNewComment: PropTypes.func,
-//   onAdd: PropTypes.func,
-//   t: PropTypes.func,
+    t: PropTypes.func,
+    lang: PropTypes.string,
 };
 
 CommentCard.defaultProps = {
     onSendNewComment: () => {},
     onOpenCommentForm: () => {},
-//   onAdd: () => {},
-//   t: (text) => text,
+    t: (text) => text,
 };
 
 export default memo(CommentCard);

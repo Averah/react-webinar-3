@@ -4,7 +4,7 @@ import { cn as bem } from "@bem-react/classname";
 import { Link } from "react-router-dom";
 import "./style.css";
 
-function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth }) {
+function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth, t }) {
   const [text, setText] = useState('');
   const cn = bem("CommentForm");
 
@@ -19,7 +19,7 @@ function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth }) {
   let content = isAuth ? (
     <form onSubmit={submitForm} className={cn('form')}>
       <div className={cn("title")}>
-        {isParentComment ? "Новый ответ" : "Новый комментарий"}
+        {isParentComment ? t('commentsForm.NewAnswer') : t('commentsForm.NewComment')}
       </div>
       <textarea
         className={cn("textarea")}
@@ -27,10 +27,10 @@ function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth }) {
         onChange={(e) => setText(e.target.value)}
       />
       <div className={cn("buttonsContainer")}>
-        <button type="submit">Отправить</button>
+        <button type="submit">{t('commentsForm.Send')}</button>
         {isParentComment && (
           <button type="button" onClick={onCancel}>
-            Отмена
+            {t('commentsForm.Cancel')}
           </button>
         )}
       </div>
@@ -38,8 +38,8 @@ function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth }) {
   ) : (
     (
       <div className={cn('authLink')}>
-        <Link to="/login">Войдите,</Link> чтобы иметь возможность {isParentComment ? 'ответить' : 'комментировать'}{' '} 
-        {isParentComment && <button onClick={onCancel} className={cn("unauthCancelBtn")}>Отмена</button>}
+        <Link to="/login">{t('commentsForm.Login')}</Link>, {t('commentsForm.toHaveOportunity')} {isParentComment ? t('commentsForm.respond') : t('commentsForm.comment')}{' '} 
+        {isParentComment && <button onClick={onCancel} className={cn("unauthCancelBtn")}>{t('commentsForm.Cancel')}</button>}
       </div>
     )
   )
@@ -57,7 +57,7 @@ CommentForm.propTypes = {
     parentId: PropTypes.string,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
-//   t: PropTypes.func,
+    t: PropTypes.func,
 };
 
 CommentForm.defaultProps = {
@@ -65,7 +65,7 @@ CommentForm.defaultProps = {
   onSubmit: () => {},
   onCancel: () => {},
   isAuth: false,
-  // t: (text) => text,
+  t: (text) => text,
 };
 
 export default memo(CommentForm);
