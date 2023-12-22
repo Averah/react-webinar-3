@@ -5,23 +5,34 @@ import CommentForm from "../comment-form";
 import "./style.css";
 
 function getLocalDateMonthYear(d, locale) {
-    return d.toLocaleDateString(locale, { day: 'numeric', month: 'long' }) + " " +
-           d.toLocaleDateString(locale, { year: 'numeric' });
-  }
+  return (
+    d.toLocaleDateString(locale, { day: "numeric", month: "long" }) +
+    " " +
+    d.toLocaleDateString(locale, { year: "numeric" })
+  );
+}
 
-function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentForm, isAuth, t, lang }) {
+function CommentCard({
+  comment,
+  onSendNewComment,
+  isFormOpened,
+  onOpenCommentForm,
+  isAuth,
+  t,
+  lang,
+}) {
   const cn = bem("CommentCard");
 
   const closeForm = useCallback(() => {
-    onOpenCommentForm(null)
+    onOpenCommentForm(null);
   }, []);
 
   const date = getLocalDateMonthYear(new Date(comment.dateUpdate), lang);
 
   const time = new Date(comment.dateUpdate).toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-   });
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <div
@@ -32,7 +43,7 @@ function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentFor
         <div className={cn("header")}>
           <span className={cn("username")}>{comment.author.profile.name}</span>
           <span className={cn("date")}>
-            {date} t{'comments.in'} {time}
+            {date} t{"comments.in"} {time}
           </span>
         </div>
         <div className={cn("text")}>{comment.text}</div>
@@ -40,7 +51,7 @@ function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentFor
           onClick={() => onOpenCommentForm(comment._id)}
           className={cn("responseBtn")}
         >
-          {t('comments.Respond')}
+          {t("comments.Respond")}
         </button>
       </div>
       {isFormOpened && (
@@ -58,19 +69,19 @@ function CommentCard({ comment, onSendNewComment, isFormOpened, onOpenCommentFor
 }
 
 CommentCard.propTypes = {
-    isAuth: PropTypes.bool,
-    comment: PropTypes.object,
-    isFormOpened: PropTypes.bool,
-    onOpenCommentForm: PropTypes.func,
-    onSendNewComment: PropTypes.func,
-    t: PropTypes.func,
-    lang: PropTypes.string,
+  isAuth: PropTypes.bool,
+  comment: PropTypes.object,
+  isFormOpened: PropTypes.bool,
+  onOpenCommentForm: PropTypes.func,
+  onSendNewComment: PropTypes.func,
+  t: PropTypes.func,
+  lang: PropTypes.string,
 };
 
 CommentCard.defaultProps = {
-    onSendNewComment: () => {},
-    onOpenCommentForm: () => {},
-    t: (text) => text,
+  onSendNewComment: () => {},
+  onOpenCommentForm: () => {},
+  t: (text) => text,
 };
 
 export default memo(CommentCard);

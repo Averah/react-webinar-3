@@ -5,21 +5,23 @@ import { Link } from "react-router-dom";
 import "./style.css";
 
 function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth, t }) {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const cn = bem("CommentForm");
 
   const submitForm = (e) => {
     e.preventDefault();
     onSubmit(parentType, parentId, text);
-    setText('');
-  }
+    setText("");
+  };
 
-  const isParentComment = parentType === 'comment';
+  const isParentComment = parentType === "comment";
 
   let content = isAuth ? (
-    <form onSubmit={submitForm} className={cn('form')}>
+    <form onSubmit={submitForm} className={cn("form")}>
       <div className={cn("title")}>
-        {isParentComment ? t('commentsForm.NewAnswer') : t('commentsForm.NewComment')}
+        {isParentComment
+          ? t("commentsForm.NewAnswer")
+          : t("commentsForm.NewComment")}
       </div>
       <textarea
         className={cn("textarea")}
@@ -27,41 +29,43 @@ function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth, t }) {
         onChange={(e) => setText(e.target.value)}
       />
       <div className={cn("buttonsContainer")}>
-        <button type="submit">{t('commentsForm.Send')}</button>
+        <button type="submit">{t("commentsForm.Send")}</button>
         {isParentComment && (
           <button type="button" onClick={onCancel}>
-            {t('commentsForm.Cancel')}
+            {t("commentsForm.Cancel")}
           </button>
         )}
       </div>
     </form>
   ) : (
-    (
-      <div className={cn('authLink')}>
-        <Link to="/login">{t('commentsForm.Login')}</Link>, {t('commentsForm.toHaveOportunity')} {isParentComment ? t('commentsForm.respond') : t('commentsForm.comment')}{' '} 
-        {isParentComment && <button onClick={onCancel} className={cn("unauthCancelBtn")}>{t('commentsForm.Cancel')}</button>}
-      </div>
-    )
-  )
+    <div className={cn("authLink")}>
+      <Link to="/login">{t("commentsForm.Login")}</Link>,{" "}
+      {t("commentsForm.toHaveOportunity")}{" "}
+      {isParentComment ? t("commentsForm.respond") : t("commentsForm.comment")}{" "}
+      {isParentComment && (
+        <button onClick={onCancel} className={cn("unauthCancelBtn")}>
+          {t("commentsForm.Cancel")}
+        </button>
+      )}
+    </div>
+  );
 
   return (
-    <div className={`${cn()} ${cn(`parent-${parentType}`)}`}>
-      {content}
-    </div>
+    <div className={`${cn()} ${cn(`parent-${parentType}`)}`}>{content}</div>
   );
 }
 
 CommentForm.propTypes = {
-    parentType: PropTypes.oneOf(['comment', 'article']),
-    isAuth: PropTypes.bool,
-    parentId: PropTypes.string,
-    onSubmit: PropTypes.func,
-    onCancel: PropTypes.func,
-    t: PropTypes.func,
+  parentType: PropTypes.oneOf(["comment", "article"]),
+  isAuth: PropTypes.bool,
+  parentId: PropTypes.string,
+  onSubmit: PropTypes.func,
+  onCancel: PropTypes.func,
+  t: PropTypes.func,
 };
 
 CommentForm.defaultProps = {
-  parentId: '',
+  parentId: "",
   onSubmit: () => {},
   onCancel: () => {},
   isAuth: false,

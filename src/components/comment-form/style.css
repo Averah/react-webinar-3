@@ -28,3 +28,18 @@
     display: flex;
     gap: 10px;
 }
+
+.CommentForm-authLink {
+    font-size: 16px;
+}
+
+.CommentForm-unauthCancelBtn {
+    background: none;
+    color:  #666;
+    text-decoration-line: underline;
+    border: none;
+    width: fit-content;
+    padding: 0px;
+    font-size: 16px;
+    cursor: pointer;
+}

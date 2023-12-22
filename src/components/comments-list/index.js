@@ -4,12 +4,22 @@ import { cn as bem } from "@bem-react/classname";
 import "./style.css";
 import CommentCard from "../comment-card";
 
-function CommentsList({ comments, onSendNewComment, commentIdWithOpenedForm, onSetCommentFormId, isAuth, t, lang }) {
+function CommentsList({
+  comments,
+  onSendNewComment,
+  commentIdWithOpenedForm,
+  onSetCommentFormId,
+  isAuth,
+  t,
+  lang,
+}) {
   const cn = bem("CommentsList");
 
   return (
     <div className={cn()}>
-      <div className={cn("title")}>{t('comments.Title')} ({comments.length})</div>
+      <div className={cn("title")}>
+        {t("comments.Title")} ({comments.length})
+      </div>
       {comments.map((comment) => (
         <CommentCard
           isFormOpened={comment._id === commentIdWithOpenedForm}
@@ -27,22 +37,20 @@ function CommentsList({ comments, onSendNewComment, commentIdWithOpenedForm, onS
 }
 
 CommentsList.propTypes = {
-    isAuth: PropTypes.bool,
-    commentIdWithOpenedForm: PropTypes.string,
-    comments: PropTypes.array,
-    onSetCommentFormId: PropTypes.func,
-    onSendNewComment: PropTypes.func,
-    t: PropTypes.func,
-    lang: PropTypes.string,
-//   onAdd: PropTypes.func,
+  isAuth: PropTypes.bool,
+  commentIdWithOpenedForm: PropTypes.string,
+  comments: PropTypes.array,
+  onSetCommentFormId: PropTypes.func,
+  onSendNewComment: PropTypes.func,
+  t: PropTypes.func,
+  lang: PropTypes.string,
 };
 
 CommentsList.defaultProps = {
-    commentIdWithOpenedForm: null,
-    onSendNewComment: () => {},
-    onSetCommentFormId: () => {},
-    t: (text) => text,
-//   onAdd: () => {},
+  commentIdWithOpenedForm: null,
+  onSendNewComment: () => {},
+  onSetCommentFormId: () => {},
+  t: (text) => text,
 };
 
 export default memo(CommentsList);
