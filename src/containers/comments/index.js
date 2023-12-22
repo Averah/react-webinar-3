@@ -35,12 +35,12 @@ function Comments() {
     ]), [select.comments]),
   };
 
-  const {t} = useTranslate();
+  const {t, lang} = useTranslate();
   const { isAuth } = useAuth();
 
   useInit(() => {
     dispatch(commentsActions.load(params.id));
-  }, [params.id]);
+  }, [params.id, lang]);
 
   const callbacks = {
     sendComment: useCallback((parentType, parentId, text) => {
