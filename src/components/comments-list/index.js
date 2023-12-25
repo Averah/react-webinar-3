@@ -12,6 +12,9 @@ function CommentsList({
   isAuth,
   t,
   lang,
+  userId,
+  pathname,
+  clearIsNewComment
 }) {
   const cn = bem("CommentsList");
 
@@ -30,6 +33,9 @@ function CommentsList({
           isAuth={isAuth}
           t={t}
           lang={lang}
+          userId={userId}
+          pathname={pathname}
+          clearIsNewComment={clearIsNewComment}
         />
       ))}
     </div>
@@ -42,15 +48,20 @@ CommentsList.propTypes = {
   comments: PropTypes.array,
   onSetCommentFormId: PropTypes.func,
   onSendNewComment: PropTypes.func,
+  clearIsNewComment: PropTypes.func,
   t: PropTypes.func,
   lang: PropTypes.string,
+  userId: PropTypes.string,
+  pathname: PropTypes.string
 };
 
 CommentsList.defaultProps = {
   commentIdWithOpenedForm: null,
   onSendNewComment: () => {},
   onSetCommentFormId: () => {},
+  clearIsNewComment: () => {},
   t: (text) => text,
+
 };
 
 export default memo(CommentsList);

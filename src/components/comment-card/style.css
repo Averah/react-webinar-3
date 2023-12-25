@@ -11,8 +11,13 @@
     padding-right: 10px;
 }
 
+.CommentCard-username_authorized { 
+    color: #666666
+}
+
 .CommentCard-text {
     font-size: 14px;
+    word-wrap: break-word;
 }
 
 .CommentCard-responseBtn {

@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { cn as bem } from "@bem-react/classname";
 import CommentForm from "../comment-form";
@@ -20,6 +20,9 @@ function CommentCard({
   isAuth,
   t,
   lang,
+  userId,
+  pathname,
+  clearIsNewComment
 }) {
   const cn = bem("CommentCard");
 
@@ -34,16 +37,29 @@ function CommentCard({
     minute: "2-digit",
   });
 
+  const MAX_LEVEL = 5;
+
+  const cardContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (comment.isNewComment) {
+      cardContainerRef.current?.scrollIntoView();
+      clearIsNewComment();
+    }
+    
+  }, [comment.isNewComment])
+
   return (
     <div
-      className={cn()}
-      style={{ paddingLeft: `${(comment.level - 1) * 30}px` }}
+      ref={cardContainerRef}
+      className={`${cn()}_${comment.level}`}
+      style={{ paddingLeft: `${(comment.level <= MAX_LEVEL ? comment.level - 1 : MAX_LEVEL) * 30}px` }}
     >
       <div className={cn("container")}>
         <div className={cn("header")}>
-          <span className={cn("username")}>{comment.author.profile.name}</span>
+          <span className={cn("username", {'authorized': userId === comment.author._id})}>{comment.author.profile.name}</span>
           <span className={cn("date")}>
-            {date} t{"comments.in"} {time}
+            {date} {t("comments.in")} {time}
           </span>
         </div>
         <div className={cn("text")}>{comment.text}</div>
@@ -62,6 +78,7 @@ function CommentCard({
           onSubmit={onSendNewComment}
           onCancel={closeForm}
           t={t}
+          pathname={pathname}
         />
       )}
     </div>
@@ -74,13 +91,17 @@ CommentCard.propTypes = {
   isFormOpened: PropTypes.bool,
   onOpenCommentForm: PropTypes.func,
   onSendNewComment: PropTypes.func,
+  clearIsNewComment: PropTypes.func,
   t: PropTypes.func,
   lang: PropTypes.string,
+  userId: PropTypes.string,
+  pathname: PropTypes.string,
 };
 
 CommentCard.defaultProps = {
   onSendNewComment: () => {},
   onOpenCommentForm: () => {},
+  clearIsNewComment: () => {},
   t: (text) => text,
 };
 

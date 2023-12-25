@@ -1,10 +1,11 @@
 import { memo, useCallback, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useStore from "../../hooks/use-store";
 import useTranslate from "../../hooks/use-translate";
 import useInit from "../../hooks/use-init";
 import Spinner from "../../components/spinner";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector as useReduxSelector} from "react-redux";
+import useSelector from '../../hooks/use-selector';
 import shallowequal from "shallowequal";
 import commentsActions from "../../store-redux/comments/actions";
 import treeToList from "../../utils/tree-to-list";
@@ -19,8 +20,10 @@ function Comments() {
   const dispatch = useDispatch();
 
   const params = useParams();
+  const location = useLocation();
+  const pathname = location.pathname;
 
-  const select = useSelector(
+  const select = useReduxSelector(
     (state) => ({
       article: state.article.data,
       waiting: state.comments.waiting,
@@ -29,6 +32,8 @@ function Comments() {
     }),
     shallowequal
   );
+
+  const userId = useSelector((state) => state.session.user._id)
 
   const options = {
     comments: useMemo(
@@ -59,6 +64,10 @@ function Comments() {
     setCommentIdWithOpenedForm: useCallback((id) => {
       dispatch(commentsActions.setCommentIdWithOpenedForm(id));
     }, []),
+
+    clearIsNewComment: useCallback(() => {
+      dispatch(commentsActions.clearIsNewComment());
+    }, []),
   };
 
   const [_, ...comments] = options.comments;
@@ -73,6 +82,9 @@ function Comments() {
         onSetCommentFormId={callbacks.setCommentIdWithOpenedForm}
         lang={lang}
         t={t}
+        userId={userId}
+        pathname={pathname}
+        clearIsNewComment={callbacks.clearIsNewComment}
       />
       {!select.commentIdWithOpenedForm && (
         <CommentForm
@@ -81,6 +93,7 @@ function Comments() {
           parentType="article"
           parentId={params.id}
           t={t}
+          pathname={pathname}
         />
       )}
     </Spinner>

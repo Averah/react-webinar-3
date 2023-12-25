@@ -24,13 +24,19 @@ function reducer(state = initialState, action) {
       return { ...state, sendWaiting: true };
 
     case "comments/send-success":
-      return { ...state, sendWaiting: false, commentIdWithOpenedForm: null };
+      return { ...state, sendWaiting: false, commentIdWithOpenedForm: null, comments: [...state.comments, {...action.payload, isNewComment: true}]};
 
     case "comments/send-error":
       return { ...state, sendWaiting: false };
 
     case "comments/set-comment-id-with-opened-form":
       return { ...state, commentIdWithOpenedForm: action.payload };
+    
+    case "comments/clear-is-new-comment":
+      return {...state, comments: state.comments.map((comment) => (
+        comment.isNewComment ? {...comment, 
+          isNewComment: false } : comment
+      ))}
 
     default:
       return state;

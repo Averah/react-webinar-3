@@ -4,9 +4,8 @@ export default {
       dispatch({ type: "comments/load-comments" });
 
       try {
-        // лимит такой временно, комментов очень много, сюда наверное в дальнейшем надо прикрутить пагинацию или бесконечную ленту
         const res = await services.api.request({
-          url: `/api/v1/comments?search[parent]=${id}&fields=items(*,author(_id,profile(name)))&limit=30`,
+          url: `/api/v1/comments?search[parent]=${id}&fields=items(*,author(_id,profile(name)))&limit=*`,
         });
 
         dispatch({
@@ -24,7 +23,7 @@ export default {
 
       try {
         const res = await services.api.request({
-          url: "/api/v1/comments",
+          url: "/api/v1/comments?fields=*,author(_id,profile(name))",
           method: "POST",
           body: JSON.stringify({
             text,
@@ -35,8 +34,10 @@ export default {
           }),
         });
 
-        dispatch({ type: "comments/send-success" });
-        dispatch(this.load(pageId));
+        dispatch({
+          type: "comments/send-success",
+          payload: res.data.result
+        });
       } catch (e) {
         dispatch({ type: "comments/send-error" });
       }
@@ -46,4 +47,9 @@ export default {
     type: "comments/set-comment-id-with-opened-form",
     payload: id,
   }),
+
+  clearIsNewComment: () => ({
+    type: "comments/clear-is-new-comment"
+  }),
 };
+

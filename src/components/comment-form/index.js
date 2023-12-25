@@ -4,7 +4,7 @@ import { cn as bem } from "@bem-react/classname";
 import { Link } from "react-router-dom";
 import "./style.css";
 
-function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth, t }) {
+function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth, t, pathname }) {
   const [text, setText] = useState("");
   const cn = bem("CommentForm");
 
@@ -39,7 +39,7 @@ function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth, t }) {
     </form>
   ) : (
     <div className={cn("authLink")}>
-      <Link to="/login">{t("commentsForm.Login")}</Link>,{" "}
+      <Link to="/login" state={{ back: pathname }}>{t("commentsForm.Login")}</Link>,{" "}
       {t("commentsForm.toHaveOportunity")}{" "}
       {isParentComment ? t("commentsForm.respond") : t("commentsForm.comment")}{" "}
       {isParentComment && (
@@ -62,6 +62,7 @@ CommentForm.propTypes = {
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func,
   t: PropTypes.func,
+  pathname: PropTypes.string
 };
 
 CommentForm.defaultProps = {
