@@ -6,6 +6,7 @@ export const initialState = {
   error: "",
   commentIdWithOpenedForm: null,
   isArticleCommonComment: null,
+  formLevel: 1,
 };
 
 // Обработчик действий
@@ -30,7 +31,7 @@ function reducer(state = initialState, action) {
       return { ...state, sendWaiting: false };
 
     case "comments/set-comment-id-with-opened-form":
-      return { ...state, commentIdWithOpenedForm: action.payload };
+      return { ...state, commentIdWithOpenedForm: action.payload.id, formLevel: action.payload.formLevel ?? 1 };
     
     case "comments/clear-is-new-comment":
       return {...state, comments: state.comments.map((comment) => (

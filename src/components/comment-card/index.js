@@ -22,7 +22,8 @@ function CommentCard({
   lang,
   userId,
   pathname,
-  clearIsNewComment
+  clearIsNewComment,
+  formLevel,
 }) {
   const cn = bem("CommentCard");
 
@@ -40,6 +41,7 @@ function CommentCard({
   const MAX_LEVEL = 5;
 
   const cardContainerRef = useRef(null);
+  const answerFormRef = useRef(null);
 
   useEffect(() => {
     if (comment.isNewComment) {
@@ -47,41 +49,56 @@ function CommentCard({
       clearIsNewComment();
     }
     
-  }, [comment.isNewComment])
+  }, [comment.isNewComment])  
+  
+  useEffect(() => {
+    if (isFormOpened) {
+      answerFormRef.current?.scrollIntoView();
+    }
+    
+  }, [isFormOpened])
 
   return (
-    <div
-      ref={cardContainerRef}
-      className={`${cn()}_${comment.level}`}
-      style={{ paddingLeft: `${(comment.level <= MAX_LEVEL ? comment.level - 1 : MAX_LEVEL) * 30}px` }}
-    >
-      <div className={cn("container")}>
-        <div className={cn("header")}>
-          <span className={cn("username", {'authorized': userId === comment.author._id})}>{comment.author.profile.name}</span>
-          <span className={cn("date")}>
-            {date} {t("comments.in")} {time}
-          </span>
+    <>
+      <div
+        ref={cardContainerRef}
+        className={`${cn()}_${comment.level}`}
+        style={{ paddingLeft: `${(comment.level <= MAX_LEVEL ? comment.level - 1 : MAX_LEVEL) * 30}px` }}
+      >
+        <div className={cn("container")}>
+          <div className={cn("header")}>
+            <span className={cn("username", { 'authorized': userId === comment.author._id })}>{comment.author.profile.name}</span>
+            <span className={cn("date")}>
+              {date} {t("comments.in")} {time}
+            </span>
+          </div>
+          <div className={cn("text")}>{comment.text}</div>
+          <button
+            onClick={() => onOpenCommentForm(comment._id)}
+            className={cn("responseBtn")}
+          >
+            {t("comments.Respond")}
+          </button>
         </div>
-        <div className={cn("text")}>{comment.text}</div>
-        <button
-          onClick={() => onOpenCommentForm(comment._id)}
-          className={cn("responseBtn")}
-        >
-          {t("comments.Respond")}
-        </button>
       </div>
+      
       {isFormOpened && (
-        <CommentForm
-          isAuth={isAuth}
-          parentType="comment"
-          parentId={comment._id}
-          onSubmit={onSendNewComment}
-          onCancel={closeForm}
-          t={t}
-          pathname={pathname}
-        />
+        <div
+          style={{ paddingLeft: `${(formLevel <= MAX_LEVEL ? formLevel - 1 : MAX_LEVEL) * 30}px` }}
+          ref={answerFormRef}
+        >
+          <CommentForm
+            isAuth={isAuth}
+            parentType="comment"
+            parentId={comment._id}
+            onSubmit={onSendNewComment}
+            onCancel={closeForm}
+            t={t}
+            pathname={pathname}
+          />
+        </div>
       )}
-    </div>
+    </>
   );
 }
 
@@ -96,6 +113,7 @@ CommentCard.propTypes = {
   lang: PropTypes.string,
   userId: PropTypes.string,
   pathname: PropTypes.string,
+  formLevel: PropTypes.number,
 };
 
 CommentCard.defaultProps = {

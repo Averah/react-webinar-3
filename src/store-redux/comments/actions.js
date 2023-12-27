@@ -43,9 +43,12 @@ export default {
       }
     };
   },
-  setCommentIdWithOpenedForm: (id) => ({
+  setCommentIdWithOpenedForm: (id, formLevel) => ({
     type: "comments/set-comment-id-with-opened-form",
-    payload: id,
+    payload: {
+      id,
+      formLevel
+    },
   }),
 
   clearIsNewComment: () => ({

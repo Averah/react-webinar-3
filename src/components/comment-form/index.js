@@ -29,7 +29,7 @@ function CommentForm({ parentType, parentId, onSubmit, onCancel, isAuth, t, path
         onChange={(e) => setText(e.target.value)}
       />
       <div className={cn("buttonsContainer")}>
-        <button type="submit">{t("commentsForm.Send")}</button>
+        <button type="submit" disabled={!text.trim()}>{t("commentsForm.Send")}</button>
         {isParentComment && (
           <button type="button" onClick={onCancel}>
             {t("commentsForm.Cancel")}

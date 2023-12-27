@@ -29,6 +29,7 @@ function Comments() {
       waiting: state.comments.waiting,
       comments: state.comments.comments,
       commentIdWithOpenedForm: state.comments.commentIdWithOpenedForm,
+      formLevel: state.comments.formLevel,
     }),
     shallowequal
   );
@@ -47,6 +48,8 @@ function Comments() {
     ),
   };
 
+  const [_, ...comments] = options.comments;
+
   const { t, lang } = useTranslate();
   const { isAuth } = useAuth();
 
@@ -62,15 +65,38 @@ function Comments() {
       [params.id]
     ),
     setCommentIdWithOpenedForm: useCallback((id) => {
-      dispatch(commentsActions.setCommentIdWithOpenedForm(id));
-    }, []),
+      if (id === null) {
+        dispatch(commentsActions.setCommentIdWithOpenedForm(id));
+        return;
+      }
+
+      let commentForAnswerLevel = null;
+      for (let idx = 0; idx < comments.length; idx++) {
+        if (comments[idx]._id === id) {
+          commentForAnswerLevel = comments[idx].level;
+
+          if (idx === comments.length - 1) {
+            dispatch(commentsActions.setCommentIdWithOpenedForm(comments[idx]._id, commentForAnswerLevel + 1));
+          }
+          continue;
+        }
+
+        if (idx > 0 && commentForAnswerLevel && commentForAnswerLevel >= comments[idx].level) {
+          dispatch(commentsActions.setCommentIdWithOpenedForm( comments[idx - 1]._id, commentForAnswerLevel + 1));
+          break;
+        }
+
+        if (idx === comments.length - 1) {
+          dispatch(commentsActions.setCommentIdWithOpenedForm(comments[idx]._id, commentForAnswerLevel + 1));
+          break;
+        }
+      }
+    }, [options.comments]),
 
     clearIsNewComment: useCallback(() => {
       dispatch(commentsActions.clearIsNewComment());
     }, []),
   };
-
-  const [_, ...comments] = options.comments;
 
   return (
     <Spinner active={select.waiting}>
@@ -85,6 +111,7 @@ function Comments() {
         userId={userId}
         pathname={pathname}
         clearIsNewComment={callbacks.clearIsNewComment}
+        formLevel={select.formLevel}
       />
       {!select.commentIdWithOpenedForm && (
         <CommentForm

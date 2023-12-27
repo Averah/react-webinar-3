@@ -14,7 +14,8 @@ function CommentsList({
   lang,
   userId,
   pathname,
-  clearIsNewComment
+  clearIsNewComment,
+  formLevel,
 }) {
   const cn = bem("CommentsList");
 
@@ -36,6 +37,7 @@ function CommentsList({
           userId={userId}
           pathname={pathname}
           clearIsNewComment={clearIsNewComment}
+          formLevel={formLevel}
         />
       ))}
     </div>
@@ -52,11 +54,13 @@ CommentsList.propTypes = {
   t: PropTypes.func,
   lang: PropTypes.string,
   userId: PropTypes.string,
-  pathname: PropTypes.string
+  pathname: PropTypes.string,
+  formLevel: PropTypes.number,
 };
 
 CommentsList.defaultProps = {
   commentIdWithOpenedForm: null,
+  formLevel: 1,
   onSendNewComment: () => {},
   onSetCommentFormId: () => {},
   clearIsNewComment: () => {},
